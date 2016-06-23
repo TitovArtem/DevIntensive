@@ -35,7 +35,8 @@
 
     <style name="linear_layout_between_icons">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/size_large_72</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/size_large_72</item>
         <item name="android:layout_weight">1</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">bottom</item>
@@ -50,9 +51,10 @@
         <item name="android:focusable">false</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/grey</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
-    <style name="separate_line">
+    <style name="horizontal_separate_line">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/line_size</item>
         <item name="android:background">@color/grey_light</item>
