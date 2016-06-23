@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DevIntensive</string>
+    <string name="app_name">Титов Артем</string>
     <string name="mobile_number_hint">Мобильный</string>
     <string name="email_hint">E-mail</string>
     <string name="vk_profile_hint">Профиль в VK</string>
@@ -12,4 +12,7 @@
         fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
         officia deserunt mollit anim id est laborum.
     </string>
+    <string name="title_info_rating">Рейтинг</string>
+    <string name="title_info_src_lines">Написано строк кода</string>
+    <string name="title_info_projects_count">Проектов</string>
 </resources>
