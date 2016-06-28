@@ -1,12 +1,21 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="icon">
         <item name="android:layout_width">@dimen/size_small_24</item>
@@ -100,7 +109,38 @@
 
     <style name="custom_dialog">
         <item name="android:fullDark">@android:color/transparent</item>
-
     </style>
+
+    <!--  Drawer header styles -->
+    <style name="drawer_header_text_view" parent="main_activity_title_info_text">
+        android:textSize="@dimen/font_normal_14"
+    </style>
+
+    <style name="drawer_header_linear_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/size_medium_56</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="drawer_header_image_view">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_marginTop">@dimen/spacing_normal_16</item>
+        <item name="android:background">@color/color_accent</item>
+    </style>
+
+    <style name="drawer_header_relative_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">172dp</item>
+        <item name="android:paddingBottom">@dimen/spacing_small_8</item>
+        <item name="android:paddingLeft">@dimen/spacing_normal_16</item>
+        <item name="android:paddingRight">@dimen/spacing_normal_16</item>
+        <item name="android:paddingTop">@dimen/spacing_medial_24</item>
+        <item name="android:background">@drawable/header_bg</item>
+    </style>
+    <!--  End drawer header styles -->
+
 
 </resources>

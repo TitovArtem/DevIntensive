@@ -15,4 +15,6 @@
     <string name="title_info_rating">Рейтинг</string>
     <string name="title_info_src_lines">Написано строк кода</string>
     <string name="title_info_projects_count">Проектов</string>
+    <string name="my_profile_drawer_menu">Мой профиль</string>
+    <string name="team_drawer_menu">Команда</string>
 </resources>

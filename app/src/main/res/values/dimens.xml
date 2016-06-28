@@ -21,4 +21,5 @@
     <dimen name="font_normal_14">14sp</dimen>
 
     <dimen name="line_size">1dp</dimen>
+    <dimen name="profile_image_size">256dp</dimen>
 </resources>
