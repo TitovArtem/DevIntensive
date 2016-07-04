@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/drawer_header_relative_layout">
+
+    <ImageView style="@style/drawer_header_image_view"/>
+
+    <LinearLayout
+        style="@style/drawer_header_linear_layout">
+        <TextView
+            android:id="@+id/user_name_txt"
+            style="@style/drawer_header_text_view"
+            android:fontFamily="sans-serif-medium"
+            android:text="Титов Артем"/>
+
+        <TextView
+            android:id="@+id/user_email_txt"
+            style="@style/drawer_header_text_view"
+            android:fontFamily="sans-serif"
+            android:text="titov.artem.bmstu@gmail.com"/>
+
+    </LinearLayout>
+</RelativeLayout>
