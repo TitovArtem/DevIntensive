@@ -26,6 +26,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = ConstantManager.TAG_PREFIX + " Main Activity";
 
     private DataManager mDataManager;
+    /** Edit mode. It's 1 if data is modifying and 0 in other case. */
     private int mCurrentEditMode = 0;
 
     private CoordinatorLayout mCoordinatorLayout;
@@ -156,14 +157,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         NavigationView navigationView = (NavigationView)findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                showSnackbar(item.getTitle().toString());
-                item.setChecked(true);
-                mNavigationDrawer.closeDrawer(GravityCompat.START);
-                return false;
-            }
-        });
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        showSnackbar(item.getTitle().toString());
+                        item.setChecked(true);
+                        mNavigationDrawer.closeDrawer(GravityCompat.START);
+                        return false;
+                    }
+                });
     }
 
     private void changeEditMode(int mode) {
@@ -180,8 +181,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 userValue.setEnabled(false);
                 userValue.setFocusable(false);
                 userValue.setFocusableInTouchMode(false);
-                saveUserInfoValue();
             }
+            saveUserInfoValue();
         }
     }
 
