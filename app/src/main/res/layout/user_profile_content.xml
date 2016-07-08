@@ -1,0 +1,205 @@
+<android.support.v4.widget.NestedScrollView style="@style/match_parent_width_height"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        style="@style/match_parent_width_height"
+        android:orientation="vertical">
+
+        <!-- Container for repository stats -->
+        <LinearLayout
+            style="@style/main_activity_title_repository_stats_container">
+
+            <LinearLayout
+                style="@style/main_activity_title_repository_stats_cell">
+
+                <TextView
+                    android:id="@+id/github_rating_tv"
+                    style="@style/main_activity_title_info_text.value"
+                    android:text="5"/>
+
+                <TextView
+                    style="@style/main_activity_title_info_text.description"
+                    android:text="@string/title_info_rating"/>
+            </LinearLayout>
+
+            <View style="@style/vertical_separate_line"/>
+
+            <LinearLayout
+                style="@style/main_activity_title_repository_stats_cell"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/github_src_lines_tv"
+                    style="@style/main_activity_title_info_text.value"
+                    android:text="5"/>
+
+                <TextView
+                    style="@style/main_activity_title_info_text.description"
+                    android:text="@string/title_info_src_lines"/>
+            </LinearLayout>
+
+            <View style="@style/vertical_separate_line"/>
+
+            <LinearLayout
+                style="@style/main_activity_title_repository_stats_cell">
+
+                <TextView
+                    android:id="@+id/github_projects_count_tv"
+                    style="@style/main_activity_title_info_text.value"
+                    android:text="5"/>
+
+                <TextView
+                    style="@style/main_activity_title_info_text.description"
+                    android:text="@string/title_info_projects_count"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Phone number -->
+        <LinearLayout
+            style="@style/main_activity_info_line">
+
+            <ImageView
+                style="@style/icon.left"
+                android:src="@drawable/ic_call_black_24dp"/>
+
+            <LinearLayout
+                style="@style/main_activity_linear_layout_between_icons">
+
+                <android.support.design.widget.TextInputLayout
+                    style="@style/match_parent_width_wrap_content_height">
+
+                    <EditText
+                        android:id="@+id/phone_et"
+                        style="@style/main_activity_edit_text_info"
+                        android:hint="@string/mobile_number_hint"
+                        android:inputType="phone"
+                        android:text="+7 (968) 827-73-56"/>
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/call_img"
+                style="@style/icon.right"
+                android:src="@drawable/ic_phone_in_talk_black_24dp"/>
+        </LinearLayout>
+
+        <View style="@style/horizontal_separate_line"/>
+
+        <!-- Email -->
+        <LinearLayout
+            style="@style/main_activity_info_line">
+
+            <ImageView
+                style="@style/icon.left"
+                android:src="@drawable/ic_email_black_24dp"/>
+
+            <LinearLayout
+                style="@style/main_activity_linear_layout_between_icons">
+
+                <android.support.design.widget.TextInputLayout
+                    style="@style/match_parent_width_wrap_content_height">
+
+                    <EditText
+                        android:id="@+id/mail_et"
+                        style="@style/main_activity_edit_text_info"
+                        android:hint="@string/email_hint"
+                        android:inputType="textMultiLine"
+                        android:text="rbi62007@yandex.ru"/>
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <ImageView
+                style="@style/icon.right"
+                android:src="@drawable/ic_send_black_24dp"/>
+        </LinearLayout>
+
+        <View style="@style/horizontal_separate_line"/>
+
+        <!-- vk.com profile -->
+        <LinearLayout
+            style="@style/main_activity_info_line">
+
+            <ImageView
+                style="@style/icon.left"
+                android:src="@drawable/ic_vk_circle_24dp"/>
+
+            <LinearLayout
+                style="@style/main_activity_linear_layout_between_icons">
+
+                <android.support.design.widget.TextInputLayout
+                    style="@style/match_parent_width_wrap_content_height">
+
+                    <EditText
+                        android:id="@+id/vk_et"
+                        style="@style/main_activity_edit_text_info"
+                        android:hint="@string/vk_profile_hint"
+                        android:inputType="textMultiLine"
+                        android:text="vk.com/id9370767"/>
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <ImageView
+                style="@style/icon.right"
+                android:src="@drawable/ic_visibility_black_24dp"/>
+        </LinearLayout>
+
+        <View style="@style/horizontal_separate_line"/>
+
+        <!-- github.com profile -->
+        <LinearLayout
+            style="@style/main_activity_info_line">
+
+            <ImageView
+                style="@style/icon.left"
+                android:src="@drawable/ic_github_circle_24dp"/>
+
+            <LinearLayout
+                style="@style/main_activity_linear_layout_between_icons">
+
+                <android.support.design.widget.TextInputLayout
+                    style="@style/match_parent_width_wrap_content_height">
+
+                    <EditText
+                        android:id="@+id/github_et"
+                        style="@style/main_activity_edit_text_info"
+                        android:hint="@string/repository_hint"
+                        android:inputType="textMultiLine"
+                        android:text="github.com/TitovArtem/DevIntensive"/>
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <ImageView
+                style="@style/icon.right"
+                android:src="@drawable/ic_visibility_black_24dp"/>
+        </LinearLayout>
+
+        <View style="@style/horizontal_separate_line"/>
+
+        <!-- About -->
+        <LinearLayout
+            style="@style/main_activity_info_line">
+
+            <ImageView
+                style="@style/icon.left"
+                android:src="@drawable/ic_account_circle_black_24dp"/>
+
+            <LinearLayout
+                style="@style/main_activity_linear_layout_between_icons">
+
+                <android.support.design.widget.TextInputLayout
+                    style="@style/match_parent_width_wrap_content_height">
+
+                    <EditText
+                        android:id="@+id/about_et"
+                        style="@style/main_activity_edit_text_info"
+                        android:hint="@string/about_hint"
+                        android:inputType="textMultiLine"
+                        android:text="@string/lorem_ipsum"/>
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
+
