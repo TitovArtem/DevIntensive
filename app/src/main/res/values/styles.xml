@@ -17,6 +17,21 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="wrap_content_width_height">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="match_parent_width_wrap_content_height">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="match_parent_width_height">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
     <style name="icon">
         <item name="android:layout_width">@dimen/size_small_24</item>
         <item name="android:layout_height">@dimen/size_small_24</item>
@@ -34,9 +49,7 @@
         <item name="android:layout_marginRight">@dimen/spacing_medium_32</item>
     </style>
 
-    <style name="main_activity_info_line">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="main_activity_info_line" parent="match_parent_width_wrap_content_height">
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_marginTop">@dimen/spacing_small_8</item>
         <item name="android:layout_marginBottom">@dimen/spacing_small_8</item>
@@ -53,9 +66,7 @@
         <item name="android:layout_marginRight">@dimen/spacing_normal_16</item>
     </style>
 
-    <style name="main_activity_edit_text_info">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="main_activity_edit_text_info" parent="match_parent_width_wrap_content_height">
         <item name="android:enabled">false</item>
         <item name="android:focusable">false</item>
         <item name="android:textColor">@color/black</item>
@@ -76,9 +87,9 @@
         <item name="android:background">@color/grey_light</item>
     </style>
 
-    <style name="main_activity_title_repository_stats_container">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="main_activity_title_repository_stats_container"
+        parent="match_parent_width_wrap_content_height">
+
         <item name="android:background">@color/grey</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:paddingBottom">@dimen/spacing_medial_24</item>
@@ -93,9 +104,7 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="main_activity_title_info_text">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="main_activity_title_info_text" parent="wrap_content_width_height">
         <item name="android:textColor">@color/white</item>
     </style>
 
@@ -109,6 +118,31 @@
 
     <style name="custom_dialog">
         <item name="android:fullDark">@android:color/transparent</item>
+    </style>
+
+    <style name="main_activity_toolbar">
+        <item name="android:theme">@style/AppTheme.PopupOverlay</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:titleTextColor">@color/white</item>
+    </style>
+
+    <style name="main_activity_user_photo_image_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/profile_image_size</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+    
+    <style name="main_activity_app_bar_layout" parent="match_parent_width_wrap_content_height">
+        <item name="android:theme">@style/AppTheme.AppBarOverlay</item>
+        <item name="android:background">@color/color_primary</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="main_activity_fab" parent="wrap_content_width_height">
+        <item name="android:src">@drawable/ic_create_black_24dp</item>
+        <item name="android:layout_marginRight">@dimen/fab_right_space</item>
     </style>
 
     <!--  Drawer header styles -->
@@ -128,8 +162,6 @@
         <item name="android:layout_width">60dp</item>
         <item name="android:layout_height">60dp</item>
         <item name="android:layout_marginTop">@dimen/spacing_normal_16</item>
-        <item name="android:background">@drawable/user_photo</item>
-        <item name="android:scaleType">centerCrop</item>
     </style>
 
     <style name="drawer_header_relative_layout">
