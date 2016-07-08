@@ -2,6 +2,7 @@ package com.softdesign.devintensive.ui.activities;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -66,6 +67,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private CollapsingToolbarLayout mCollapsingToolbar;
     private AppBarLayout mAppBarLayout;
     private ImageView mProfileImage;
+    private ImageView mCallPhoneIcon, mSendMailMessageIcon,
+            mViewVkProfileIcon, mViewGithubProfileIcon;
 
     private EditText mUserPhone, mUserMail, mUserVk, mUserGit, mUserBio;
     private List<EditText> mUserInfoViews;
@@ -92,6 +95,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mCollapsingToolbar = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mAppBarLayout = (AppBarLayout)findViewById(R.id.appbar_layout);
         mProfileImage = (ImageView)findViewById(R.id.user_photo_img);
+        mCallPhoneIcon = (ImageView)findViewById(R.id.call_phone_icon);
+        mSendMailMessageIcon = (ImageView)findViewById(R.id.send_mail_msg_icon);
+        mViewVkProfileIcon = (ImageView)findViewById(R.id.view_vk_profile_icon);
+        mViewGithubProfileIcon = (ImageView)findViewById(R.id.view_github_profile_icon);
 
         View headerLayout = mNavigationView.getHeaderView(0);
         mUserAvatar = (ImageView)headerLayout.findViewById(R.id.drawer_header_avatar);
@@ -112,6 +119,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mFab.setOnClickListener(this);
         mProfilePlaceholder.setOnClickListener(this);
+        mCallPhoneIcon.setOnClickListener(this);
+        mSendMailMessageIcon.setOnClickListener(this);
+        mViewVkProfileIcon.setOnClickListener(this);
+        mViewGithubProfileIcon.setOnClickListener(this);
+
 
         setupToolbar();
         setupDrawer();
@@ -181,6 +193,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.profile_placeholder:
                 showDialog(ConstantManager.LOAD_PROFILE_PHOTO_DIALOG);
+                break;
+            case R.id.view_vk_profile_icon:
+                viewVkProfile();
+                break;
+            case R.id.view_github_profile_icon:
+                viewGithubProfile();
+                break;
+            case R.id.call_phone_icon:
+                callPhoneNumber();
+                break;
+            case R.id.send_mail_msg_icon:
+                sendMailMessage();
                 break;
         }
     }
@@ -332,18 +356,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivityForResult(takeCaptureIntent, ConstantManager.REQUEST_CAMERA_PICTURE);
             }
         } else {
-            ActivityCompat.requestPermissions(this, new String[] {
+            tryRequestPermissions(new String[] {
                     Manifest.permission.CAMERA,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
             }, ConstantManager.CAMERA_REQUEST_PERMISSIONS_CODE);
-            Snackbar.make(mCoordinatorLayout,
-                    getString(R.string.user_profile_camera_permession_request),
-                    Snackbar.LENGTH_LONG).setAction("Разрешить", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    openApplicationSettings();
-                }
-            }).show();
         }
 
     }
@@ -460,5 +476,54 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+    private void tryRequestPermissions(String[] requiredPermissions, int requestCode) {
+        ActivityCompat.requestPermissions(this, requiredPermissions, requestCode);
+        Snackbar.make(mCoordinatorLayout,
+                getString(R.string.user_profile_app_permessions_request),
+                Snackbar.LENGTH_LONG).setAction("Разрешить", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openApplicationSettings();
+            }
+        }).show();
+    }
+
+    private void viewVkProfile() {
+        Uri address = Uri.parse("https://" + mUserVk.getText());
+        Intent openVkProfileIntent = new Intent(Intent.ACTION_VIEW, address);
+        startActivity(openVkProfileIntent);
+    }
+
+    private void viewGithubProfile() {
+        Uri address = Uri.parse("https://" + mUserGit.getText());
+        Intent openGitProfileIntent = new Intent(Intent.ACTION_VIEW, address);
+        startActivity(openGitProfileIntent);
+    }
+
+    private void callPhoneNumber() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) ==
+                PackageManager.PERMISSION_GRANTED) {
+            Uri callUri = Uri.parse("tel:" + mUserPhone.getText());
+            Intent callPhoneIntent = new Intent(Intent.ACTION_CALL, callUri);
+            startActivity(callPhoneIntent);
+        } else {
+            tryRequestPermissions(new String[] {Manifest.permission.CALL_PHONE},
+                    ConstantManager.CALL_PHONE_PERMISSIONS_CODE);
+        }
+    }
+
+    private void sendMailMessage() {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setType("message/rfc822");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, mUserMail.getText());
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Content");
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        } catch (ActivityNotFoundException exc) {
+            showSnackbar("Приложений для работы с email почтой не найдено");
+        }
+
+    }
 
 }

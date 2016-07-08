@@ -23,5 +23,5 @@
     <string name="user_profile_dialog_cancel">Отмена</string>
     <string name="user_profile_dialog_title">Изменить фотографию профиля</string>
     <string name="user_profile_image_choose_msg">выберите изображение</string>
-    <string name="user_profile_camera_permession_request">Для корректной работы необходимо предоставить требуемые разрешения</string>
+    <string name="user_profile_app_permessions_request">Для корректной работы приложения необходимо предоставить требуемые разрешения</string>
 </resources>
