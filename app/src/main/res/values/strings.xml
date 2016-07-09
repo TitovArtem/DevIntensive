@@ -24,4 +24,9 @@
     <string name="user_profile_dialog_title">Изменить фотографию профиля</string>
     <string name="user_profile_image_choose_msg">выберите изображение</string>
     <string name="user_profile_app_permessions_request">Для корректной работы приложения необходимо предоставить требуемые разрешения</string>
+    <string name="activity_auth_login">ВОЙТИ</string>
+    <string name="activity_auth_password_hint">Пароль</string>
+    <string name="activity_auth_email_hint">Email</string>
+    <string name="activity_auth_remain_password">Забыли пароль?</string>
+
 </resources>
