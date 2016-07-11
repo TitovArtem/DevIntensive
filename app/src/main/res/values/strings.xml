@@ -17,4 +17,16 @@
     <string name="title_info_projects_count">Проектов</string>
     <string name="my_profile_drawer_menu">Мой профиль</string>
     <string name="team_drawer_menu">Команда</string>
+    <string name="user_profile.placeholder.image">Изменить фотографию профиля</string>
+    <string name="user_profile_dialog_gallery">Загрузить из галерии</string>
+    <string name="user_profile_dialog_camera">Сделать снимок</string>
+    <string name="user_profile_dialog_cancel">Отмена</string>
+    <string name="user_profile_dialog_title">Изменить фотографию профиля</string>
+    <string name="user_profile_image_choose_msg">выберите изображение</string>
+    <string name="user_profile_app_permessions_request">Для корректной работы приложения необходимо предоставить требуемые разрешения</string>
+    <string name="activity_auth_login">ВОЙТИ</string>
+    <string name="activity_auth_password_hint">Пароль</string>
+    <string name="activity_auth_email_hint">Email</string>
+    <string name="activity_auth_remain_password">Забыли пароль?</string>
+
 </resources>
