@@ -1,5 +1,6 @@
 package com.softdesign.devintensive.ui.activities;
 
+
 import android.Manifest;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -49,6 +50,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = ConstantManager.TAG_PREFIX + " Main Activity";
@@ -57,21 +62,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /** Edit mode. It's 1 if data is modifying and 0 in other case. */
     private int mCurrentEditMode = 0;
 
-    private ImageView mUserAvatar;
-    private NavigationView mNavigationView;
-    private CoordinatorLayout mCoordinatorLayout;
-    private Toolbar mToolbar;
-    private DrawerLayout mNavigationDrawer;
-    private FloatingActionButton mFab;
-    private RelativeLayout mProfilePlaceholder;
-    private CollapsingToolbarLayout mCollapsingToolbar;
-    private AppBarLayout mAppBarLayout;
-    private ImageView mProfileImage;
-    private ImageView mCallPhoneIcon, mSendMailMessageIcon,
-            mViewVkProfileIcon, mViewGithubProfileIcon;
+    /** The main group of components. */
+    @BindView(R.id.main_coordinator_container) CoordinatorLayout mCoordinatorLayout;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.navigation_drawer) DrawerLayout mNavigationDrawer;
+    @BindView(R.id.fab) FloatingActionButton mFab;
+    @BindView(R.id.profile_placeholder) RelativeLayout mProfilePlaceholder;
+    @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
+    @BindView(R.id.appbar_layout) AppBarLayout mAppBarLayout;
+    @BindView(R.id.user_photo_img) ImageView mProfileImage;
 
-    private EditText mUserPhone, mUserMail, mUserVk, mUserGit, mUserBio;
-    private List<EditText> mUserInfoViews;
+    private ImageView mUserAvatar;
+    @BindView(R.id.navigation_view) NavigationView mNavigationView;
+
+    /** Icons in the items on the main activity for calling intents. */
+    @BindView(R.id.call_phone_icon) ImageView mCallPhoneIcon;
+    @BindView(R.id.send_mail_msg_icon) ImageView mSendMailMessageIcon;
+    @BindView(R.id.view_vk_profile_icon) ImageView mViewVkProfileIcon;
+    @BindView(R.id.view_github_profile_icon) ImageView mViewGithubProfileIcon;
+
+    /** EditText components for input / show profile user information. */
+    @BindViews({R.id.phone_et, R.id.mail_et, R.id.vk_et, R.id.github_et, R.id.about_et})
+    List<EditText> mUserInfoViews;
 
     private AppBarLayout.LayoutParams mAppBarParams;
     private File mPhotoFile = null;
@@ -81,41 +93,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Log.d(TAG, "onCreate");
-
 
         mDataManager = DataManager.getInstance();
 
-        mCoordinatorLayout = (CoordinatorLayout)findViewById(R.id.main_coordinator_container);
-        mToolbar = (Toolbar)findViewById(R.id.toolbar);
-        mNavigationDrawer = (DrawerLayout)findViewById(R.id.navigation_drawer);
-        mNavigationView = (NavigationView)findViewById(R.id.navigation_view);
-        mFab = (FloatingActionButton)findViewById(R.id.fab);
-        mProfilePlaceholder = (RelativeLayout)findViewById(R.id.profile_placeholder);
-        mCollapsingToolbar = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-        mAppBarLayout = (AppBarLayout)findViewById(R.id.appbar_layout);
-        mProfileImage = (ImageView)findViewById(R.id.user_photo_img);
-        mCallPhoneIcon = (ImageView)findViewById(R.id.call_phone_icon);
-        mSendMailMessageIcon = (ImageView)findViewById(R.id.send_mail_msg_icon);
-        mViewVkProfileIcon = (ImageView)findViewById(R.id.view_vk_profile_icon);
-        mViewGithubProfileIcon = (ImageView)findViewById(R.id.view_github_profile_icon);
-
         View headerLayout = mNavigationView.getHeaderView(0);
         mUserAvatar = (ImageView)headerLayout.findViewById(R.id.drawer_header_avatar);
-
-        mUserPhone = (EditText)findViewById(R.id.phone_et);
-        mUserMail = (EditText)findViewById(R.id.mail_et);
-        mUserVk = (EditText)findViewById(R.id.vk_et);
-        mUserGit = (EditText)findViewById(R.id.github_et);
-        mUserBio = (EditText)findViewById(R.id.about_et);
-
-        mUserInfoViews = new ArrayList<>();
-        mUserInfoViews.add(mUserPhone);
-        mUserInfoViews.add(mUserMail);
-        mUserInfoViews.add(mUserVk);
-        mUserInfoViews.add(mUserGit);
-        mUserInfoViews.add(mUserBio);
-
 
         mFab.setOnClickListener(this);
         mProfilePlaceholder.setOnClickListener(this);
@@ -123,7 +107,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mSendMailMessageIcon.setOnClickListener(this);
         mViewVkProfileIcon.setOnClickListener(this);
         mViewGithubProfileIcon.setOnClickListener(this);
-
 
         setupToolbar();
         setupDrawer();
@@ -489,13 +472,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void viewVkProfile() {
-        Uri address = Uri.parse("https://" + mUserVk.getText());
+        String link = mDataManager.getPreferencesManager().getVkProfileAddress();
+        Uri address = Uri.parse("https://" + link);
         Intent openVkProfileIntent = new Intent(Intent.ACTION_VIEW, address);
         startActivity(openVkProfileIntent);
     }
 
     private void viewGithubProfile() {
-        Uri address = Uri.parse("https://" + mUserGit.getText());
+        String link = mDataManager.getPreferencesManager().getGitProfileAddress();
+        Uri address = Uri.parse("https://" + link);
         Intent openGitProfileIntent = new Intent(Intent.ACTION_VIEW, address);
         startActivity(openGitProfileIntent);
     }
@@ -503,7 +488,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void callPhoneNumber() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) ==
                 PackageManager.PERMISSION_GRANTED) {
-            Uri callUri = Uri.parse("tel:" + mUserPhone.getText());
+            String phoneNumber = mDataManager.getPreferencesManager().getUserPnoneNumber();
+            Uri callUri = Uri.parse("tel:" + phoneNumber);
             Intent callPhoneIntent = new Intent(Intent.ACTION_CALL, callUri);
             startActivity(callPhoneIntent);
         } else {
@@ -513,9 +499,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void sendMailMessage() {
+        String mailAddress = mDataManager.getPreferencesManager().getMailAddress();
+
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
         emailIntent.setType("message/rfc822");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, mUserMail.getText());
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, mailAddress);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
         emailIntent.putExtra(Intent.EXTRA_TEXT, "Content");
         try {
