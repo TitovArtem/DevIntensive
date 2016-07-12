@@ -30,23 +30,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
 import com.softdesign.devintensive.utils.ConstantManager;
-import com.softdesign.devintensive.utils.ProfileDataValidator;
 import com.softdesign.devintensive.utils.RoundedAvatarDrawable;
-import com.softdesign.devintensive.utils.TextValidator;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -91,6 +86,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @BindViews({R.id.phone_et, R.id.mail_et, R.id.vk_et, R.id.github_et, R.id.about_et})
     List<EditText> mUserInfoViews;
 
+    /** TextView components for describing user git rates. */
+    @BindViews({R.id.github_rating_tv, R.id.github_src_lines_tv, R.id.github_projects_count_tv})
+    List<TextView> mUserValueViews;
+
+
     private AppBarLayout.LayoutParams mAppBarParams;
     private File mPhotoFile = null;
     private Uri mSelectedImage = null;
@@ -117,7 +117,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setupToolbar();
         setupDrawer();
         roundAvatar();
-        loadUserInfoValue();
+        initUserFields();
+        initUserInfoValues();
         insertProfileImage(mDataManager.getPreferencesManager().loadUserPhoto(), false);
 
 
@@ -295,23 +296,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 unlockToolbar();
                 mCollapsingToolbar.setExpandedTitleColor(getResources().getColor(R.color.white));
             }
-            saveUserInfoValue();
+            saveUserFields();
         }
     }
 
-    private void loadUserInfoValue() {
+    private void initUserFields() {
         List<String> userData = mDataManager.getPreferencesManager().loadUserProfileData();
         for (int i = 0; i < userData.size(); i++) {
             mUserInfoViews.get(i).setText(userData.get(i));
         }
     }
 
-    private void saveUserInfoValue() {
+    private void saveUserFields() {
         List<String> userData = new ArrayList<>();
         for (EditText userFieldView : mUserInfoViews) {
             userData.add(userFieldView.getText().toString());
         }
         mDataManager.getPreferencesManager().saveUserProfileData(userData);
+    }
+
+    private void initUserInfoValues() {
+        List<String> userData = mDataManager.getPreferencesManager().loadUserProfileValues();
+        for (int i = 0; i < userData.size(); i++) {
+            mUserValueViews.get(i).setText(userData.get(i));
+        }
     }
 
     private void loadPhotoFromGallery() {

@@ -25,6 +25,12 @@ public class PreferencesManager {
             ConstantManager.USER_BIO_KEY
     };
 
+    private static final String[] USER_VALUES = {
+            ConstantManager.USER_RAITING_VALUE,
+            ConstantManager.USER_CODE_LINES_NUM_VALUE,
+            ConstantManager.USER_PROJECTS_NUM_VALUE,
+    };
+
     public PreferencesManager() {
         this.mSharedPreferences = DevintensiveApplication.getSharedPreferences();
     }
@@ -65,6 +71,33 @@ public class PreferencesManager {
         return userFields;
     }
 
+    /** Saves user profile values to shared preferences.
+     * @param userValues User values. The array of 3 elements: rating value,
+     *                   number of code lines on github.com and number of projects there. */
+    public void saveUserProfileValues(int[] userValues) {
+        if (userValues.length != 3) {
+            throw new IllegalArgumentException("The given array of user values" +
+                    " has to contain 3 elements.");
+        }
+
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        for (int i = 0; i < USER_VALUES.length; i++) {
+            editor.putString(USER_VALUES[i], String.valueOf(userValues[i]));
+        }
+        editor.apply();
+    }
+
+    /** @return The list of user values (rating value,
+     *                   number of code lines on github.com and number of projects there). */
+    public List<String> loadUserProfileValues() {
+        List<String> userValues = new ArrayList<>();
+        for (int i = 0; i < USER_VALUES.length; i++) {
+            userValues.add(mSharedPreferences.getString(USER_VALUES[i], "0"));
+        }
+
+        return userValues;
+    }
+
     public String getUserPnoneNumber() {
         return mSharedPreferences.getString(ConstantManager.USER_PHONE_KEY, NONE_VALUE);
     }
@@ -95,4 +128,25 @@ public class PreferencesManager {
         return Uri.parse(mSharedPreferences.getString(ConstantManager.USER_PHOTO_KEY,
                 "android.resource://com.softdesign.devintensive/drawable/user_photo"));
     }
+
+    public void saveAuthToken(String authToken) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(ConstantManager.AUTH_TOKEN, authToken);
+        editor.apply();
+    }
+
+    public String getAuthToken() {
+        return mSharedPreferences.getString(ConstantManager.AUTH_TOKEN, NONE_VALUE);
+    }
+
+    public void saveUserId(String userId) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(ConstantManager.USER_ID_KEY, userId);
+        editor.apply();
+    }
+
+    public String getUserId() {
+        return mSharedPreferences.getString(ConstantManager.USER_ID_KEY, NONE_VALUE);
+    }
+
 }
