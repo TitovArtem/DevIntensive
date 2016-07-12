@@ -30,9 +30,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -40,7 +44,9 @@ import android.widget.RelativeLayout;
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
 import com.softdesign.devintensive.utils.ConstantManager;
+import com.softdesign.devintensive.utils.ProfileDataValidator;
 import com.softdesign.devintensive.utils.RoundedAvatarDrawable;
+import com.softdesign.devintensive.utils.TextValidator;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -277,6 +283,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 lockToolbar();
                 mCollapsingToolbar.setExpandedTitleColor(Color.TRANSPARENT);
             }
+            mUserInfoViews.get(0).requestFocus();
         } else {
             mFab.setImageResource(R.drawable.ic_create_black_24dp);
             for (EditText userValue : mUserInfoViews) {
@@ -437,8 +444,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         values.put(MediaStore.Images.Media.DATA, image.getAbsolutePath());
 
         this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-        return File.createTempFile(imageFileName, ".jpg", storageDir);
+        return image;
     }
 
     private void insertProfileImage(Uri selectedImage, boolean isSaveToPreferences) {
@@ -511,7 +517,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } catch (ActivityNotFoundException exc) {
             showSnackbar("Приложений для работы с email почтой не найдено");
         }
-
     }
 
 }
