@@ -28,5 +28,6 @@
     <string name="activity_auth_password_hint">Пароль</string>
     <string name="activity_auth_email_hint">Email</string>
     <string name="activity_auth_remain_password">Забыли пароль?</string>
+    <string name="devintensive_forgot_pass_url">http://devintensive.softdesign-apps.ru/forgotpass</string>
 
 </resources>

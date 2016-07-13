@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,23 +31,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
+import com.softdesign.devintensive.data.managers.PreferencesManager;
+import com.softdesign.devintensive.utils.CircleImageTransform;
 import com.softdesign.devintensive.utils.ConstantManager;
-import com.softdesign.devintensive.utils.ProfileDataValidator;
 import com.softdesign.devintensive.utils.RoundedAvatarDrawable;
-import com.softdesign.devintensive.utils.TextValidator;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -80,6 +78,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView mUserAvatar;
     @BindView(R.id.navigation_view) NavigationView mNavigationView;
+    /*@BindView(R.id.user_email_txt)*/ TextView mUserEmailNav;
+    /*@BindView(R.id.user_name_txt)*/ TextView mUserNameNav;
 
     /** Icons in the items on the main activity for calling intents. */
     @BindView(R.id.call_phone_icon) ImageView mCallPhoneIcon;
@@ -90,6 +90,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /** EditText components for input / show profile user information. */
     @BindViews({R.id.phone_et, R.id.mail_et, R.id.vk_et, R.id.github_et, R.id.about_et})
     List<EditText> mUserInfoViews;
+
+    /** TextView components for describing user git rates. */
+    @BindViews({R.id.github_rating_tv, R.id.github_src_lines_tv, R.id.github_projects_count_tv})
+    List<TextView> mUserValueViews;
+
 
     private AppBarLayout.LayoutParams mAppBarParams;
     private File mPhotoFile = null;
@@ -105,7 +110,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDataManager = DataManager.getInstance();
 
         View headerLayout = mNavigationView.getHeaderView(0);
-        mUserAvatar = (ImageView)headerLayout.findViewById(R.id.drawer_header_avatar);
+        mUserAvatar = (ImageView) headerLayout.findViewById(R.id.drawer_header_avatar);
+        mUserEmailNav = (TextView) headerLayout.findViewById(R.id.user_email_txt);
+        mUserNameNav = (TextView) headerLayout.findViewById(R.id.user_name_txt);
 
         mFab.setOnClickListener(this);
         mProfilePlaceholder.setOnClickListener(this);
@@ -116,10 +123,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         setupToolbar();
         setupDrawer();
-        roundAvatar();
-        loadUserInfoValue();
+        initUserFields();
+        initUserInfoValues();
+        initUserNavInfo();
         insertProfileImage(mDataManager.getPreferencesManager().loadUserPhoto(), false);
-
 
         if (savedInstanceState == null) {
             // the first start of this activity
@@ -234,15 +241,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    /** Makes avatar on NavigationView like rounded. */
-    protected void roundAvatar() {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inMutable = false;
-        Bitmap avatar = BitmapFactory.decodeResource(getResources(), R.drawable.user_photo, options);
-        RoundedAvatarDrawable roundedAvatarDrawable = new RoundedAvatarDrawable(avatar);
-        mUserAvatar.setImageDrawable(roundedAvatarDrawable);
-    }
-
     private void showSnackbar(String message) {
         Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG).show();
     }
@@ -295,24 +293,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 unlockToolbar();
                 mCollapsingToolbar.setExpandedTitleColor(getResources().getColor(R.color.white));
             }
-            saveUserInfoValue();
+            saveUserFields();
         }
     }
 
-    private void loadUserInfoValue() {
+    private void initUserFields() {
         List<String> userData = mDataManager.getPreferencesManager().loadUserProfileData();
         for (int i = 0; i < userData.size(); i++) {
             mUserInfoViews.get(i).setText(userData.get(i));
         }
     }
 
-    private void saveUserInfoValue() {
+    private void saveUserFields() {
         List<String> userData = new ArrayList<>();
         for (EditText userFieldView : mUserInfoViews) {
             userData.add(userFieldView.getText().toString());
         }
         mDataManager.getPreferencesManager().saveUserProfileData(userData);
     }
+
+    private void initUserInfoValues() {
+        List<String> userData = mDataManager.getPreferencesManager().loadUserProfileValues();
+        for (int i = 0; i < userData.size(); i++) {
+            mUserValueViews.get(i).setText(userData.get(i));
+        }
+    }
+
+    private void initUserNavInfo() {
+        PreferencesManager manager = mDataManager.getPreferencesManager();
+
+
+        Picasso.with(this)
+                .load(manager.loadUserAvatar())
+                .transform(new CircleImageTransform())
+                .into(mUserAvatar);
+        mUserNameNav.setText(manager.getUserName());
+        mUserEmailNav.setText(manager.getMailAddress());
+    }
+
 
     private void loadPhotoFromGallery() {
         Intent takeGalleryIntent = new Intent(Intent.ACTION_PICK,
