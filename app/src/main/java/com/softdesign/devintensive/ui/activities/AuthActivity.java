@@ -14,7 +14,10 @@ import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
 import com.softdesign.devintensive.data.network.req.UserLoginReq;
 import com.softdesign.devintensive.data.network.res.UserModelRes;
+import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.NetworkStatusChecker;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +26,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AuthActivity extends BaseActivity implements View.OnClickListener {
+
+    private static final String TAG = ConstantManager.TAG_PREFIX + " Auth Activity";
+
 
     @BindView(R.id.auth_login_btn) Button mSignInBtn;
     @BindView(R.id.auth_remember_txt) TextView mRememberPassword;
@@ -75,6 +81,8 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
                 userModel.getData().getUser().getId());
 
         saveUserValues(userModel);
+        saveUserProfileInfoFields(userModel);
+        saveUserPersonalData(userModel);
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -109,6 +117,7 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
+    /* Saves user git rates to shared preferences. */
     private void saveUserValues(UserModelRes userModel) {
         int[] userValues = {
                 userModel.getData().getUser().getProfileValues().getRaiting(),
@@ -117,5 +126,76 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
         };
 
         mDataManager.getPreferencesManager().saveUserProfileValues(userValues);
+    }
+
+    /* Saves name of user, user photo and avatar. */
+    private void saveUserPersonalData(UserModelRes userModelRes) {
+        String firstName = userModelRes.getData().getUser().getFirstName();
+        String secondName = userModelRes.getData().getUser().getSecondName();
+
+        mDataManager.getPreferencesManager().saveUserNames(firstName, secondName);
+
+        UserModelRes.PublicInfo publicInfo = userModelRes.getData().getUser().getPublicInfo();
+        if (publicInfo != null) {
+            String photo = publicInfo.getPhoto();
+            String avatar = publicInfo.getAvatar();
+            if (photo != null) {
+                mDataManager.getPreferencesManager().saveUserPhoto(Uri.parse(photo));
+            }
+
+            if (avatar != null) {
+                mDataManager.getPreferencesManager().saveUserAvatar(Uri.parse(avatar));
+            }
+        }
+    }
+
+    /* Returns value string if it's not null and returns clear string in other case. */
+    private String getValueOrClear(String str) {
+        if (str != null) return str;
+
+        return "";
+    }
+
+    /* Saves phone number, email, vk and git addresses,
+       about user info to shared preferences. */
+    private void saveUserProfileInfoFields(UserModelRes userModelRes) {
+        ArrayList<String> userProfileData = new ArrayList<>();
+
+        String tempVal = null;
+        UserModelRes.Contacts contacts = userModelRes.getData().getUser().getContacts();
+        if (contacts != null) {
+            // Get phone number
+            tempVal = contacts.getPhone();
+            userProfileData.add(getValueOrClear(tempVal));
+            // Get email
+            tempVal = contacts.getEmail();
+            userProfileData.add(getValueOrClear(tempVal));
+            // Get vk
+            tempVal = contacts.getVk();
+            userProfileData.add(getValueOrClear(tempVal));
+        } else {
+            for (int i = 0; i < 3; i++) {
+                userProfileData.add("");
+            }
+        }
+
+        // Get git address
+        tempVal = null;
+        UserModelRes.Repositories reps = userModelRes.getData().getUser().getRepositories();
+        if (reps != null) {
+            UserModelRes.Repo repo = reps.getRepositoriesList().get(0);
+            if (repo != null) tempVal = repo.getGit();
+        }
+        userProfileData.add(getValueOrClear(tempVal));
+
+        // Get bio
+        tempVal = null;
+        UserModelRes.PublicInfo publicInfo = userModelRes.getData().getUser().getPublicInfo();
+        if (publicInfo != null) {
+            tempVal = publicInfo.getBio();
+        }
+        userProfileData.add(getValueOrClear(tempVal));
+
+        mDataManager.getPreferencesManager().saveUserProfileData(userProfileData);
     }
 }

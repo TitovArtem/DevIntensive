@@ -129,6 +129,18 @@ public class PreferencesManager {
                 "android.resource://com.softdesign.devintensive/drawable/user_photo"));
     }
 
+    public void saveUserAvatar(Uri uri) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(ConstantManager.USER_AVATAR_KEY, uri.toString());
+        editor.apply();
+    }
+
+    public Uri loadUserAvatar() {
+        // TODO: set default photo
+        return Uri.parse(mSharedPreferences.getString(ConstantManager.USER_AVATAR_KEY,
+                "android.resource://com.softdesign.devintensive/drawable/user_photo"));
+    }
+
     public void saveAuthToken(String authToken) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(ConstantManager.AUTH_TOKEN, authToken);
@@ -148,5 +160,39 @@ public class PreferencesManager {
     public String getUserId() {
         return mSharedPreferences.getString(ConstantManager.USER_ID_KEY, NONE_VALUE);
     }
+
+    public void saveUserFirstName(String firstName) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(ConstantManager.USER_FIRST_NAME_KEY, firstName);
+        editor.apply();
+    }
+
+    public void saveUserSecondName(String secondName) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(ConstantManager.USER_SECOND_NAME_KEY, secondName);
+        editor.apply();
+    }
+
+    public void saveUserNames(String firstName, String secondName) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(ConstantManager.USER_FIRST_NAME_KEY, firstName);
+        editor.putString(ConstantManager.USER_SECOND_NAME_KEY, secondName);
+        editor.apply();
+    }
+
+    public String getUserFirstName() {
+        return mSharedPreferences.getString(ConstantManager.USER_FIRST_NAME_KEY, NONE_VALUE);
+    }
+
+    public String getUserSecondName() {
+        return mSharedPreferences.getString(ConstantManager.USER_SECOND_NAME_KEY, NONE_VALUE);
+    }
+
+    /** @return The first name and the second name of user. */
+    public String getUserName() {
+        return mSharedPreferences.getString(ConstantManager.USER_FIRST_NAME_KEY, NONE_VALUE) + " "
+                + mSharedPreferences.getString(ConstantManager.USER_SECOND_NAME_KEY, NONE_VALUE);
+    }
+
 
 }

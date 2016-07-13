@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -40,6 +41,8 @@ import android.widget.TextView;
 
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
+import com.softdesign.devintensive.data.managers.PreferencesManager;
+import com.softdesign.devintensive.utils.CircleImageTransform;
 import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.RoundedAvatarDrawable;
 import com.squareup.picasso.Picasso;
@@ -75,6 +78,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView mUserAvatar;
     @BindView(R.id.navigation_view) NavigationView mNavigationView;
+    /*@BindView(R.id.user_email_txt)*/ TextView mUserEmailNav;
+    /*@BindView(R.id.user_name_txt)*/ TextView mUserNameNav;
 
     /** Icons in the items on the main activity for calling intents. */
     @BindView(R.id.call_phone_icon) ImageView mCallPhoneIcon;
@@ -105,7 +110,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDataManager = DataManager.getInstance();
 
         View headerLayout = mNavigationView.getHeaderView(0);
-        mUserAvatar = (ImageView)headerLayout.findViewById(R.id.drawer_header_avatar);
+        mUserAvatar = (ImageView) headerLayout.findViewById(R.id.drawer_header_avatar);
+        mUserEmailNav = (TextView) headerLayout.findViewById(R.id.user_email_txt);
+        mUserNameNav = (TextView) headerLayout.findViewById(R.id.user_name_txt);
 
         mFab.setOnClickListener(this);
         mProfilePlaceholder.setOnClickListener(this);
@@ -116,11 +123,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         setupToolbar();
         setupDrawer();
-        roundAvatar();
         initUserFields();
         initUserInfoValues();
+        initUserNavInfo();
         insertProfileImage(mDataManager.getPreferencesManager().loadUserPhoto(), false);
-
 
         if (savedInstanceState == null) {
             // the first start of this activity
@@ -235,15 +241,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    /** Makes avatar on NavigationView like rounded. */
-    protected void roundAvatar() {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inMutable = false;
-        Bitmap avatar = BitmapFactory.decodeResource(getResources(), R.drawable.user_photo, options);
-        RoundedAvatarDrawable roundedAvatarDrawable = new RoundedAvatarDrawable(avatar);
-        mUserAvatar.setImageDrawable(roundedAvatarDrawable);
-    }
-
     private void showSnackbar(String message) {
         Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG).show();
     }
@@ -321,6 +318,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mUserValueViews.get(i).setText(userData.get(i));
         }
     }
+
+    private void initUserNavInfo() {
+        PreferencesManager manager = mDataManager.getPreferencesManager();
+
+
+        Picasso.with(this)
+                .load(manager.loadUserAvatar())
+                .transform(new CircleImageTransform())
+                .into(mUserAvatar);
+        mUserNameNav.setText(manager.getUserName());
+        mUserEmailNav.setText(manager.getMailAddress());
+    }
+
 
     private void loadPhotoFromGallery() {
         Intent takeGalleryIntent = new Intent(Intent.ACTION_PICK,
